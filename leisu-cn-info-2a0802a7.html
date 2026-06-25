@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>雷速 — 知识型阅读与查询辅助</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f9f5ee;
+            font-family: Georgia, 'Times New Roman', 'Songti SC', 'Noto Serif SC', serif;
+            color: #3b3b3b;
+            line-height: 1.7;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .page {
+            max-width: 880px;
+            margin: 0 auto;
+            background: rgba(255, 250, 242, 0.6);
+            padding: 2.8rem 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.03);
+        }
+
+        /* hero 区域 */
+        .hero {
+            text-align: left;
+            margin-bottom: 2.8rem;
+            border-bottom: 1px solid #e5d9c8;
+            padding-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-weight: 400;
+            font-size: 2.6rem;
+            letter-spacing: 1px;
+            color: #2b2825;
+            margin-bottom: 0.4rem;
+        }
+
+        .hero p {
+            font-size: 1.08rem;
+            color: #5e5549;
+            margin-top: 0.35rem;
+        }
+
+        .hero .sub {
+            font-style: italic;
+            color: #8c7e6d;
+            font-size: 0.98rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 通用标题 */
+        h2 {
+            font-weight: 400;
+            font-size: 1.6rem;
+            margin: 2.5rem 0 1rem 0;
+            letter-spacing: 0.5px;
+            color: #2f2a24;
+        }
+
+        h2:first-of-type {
+            margin-top: 0.2rem;
+        }
+
+        h3 {
+            font-weight: 400;
+            font-size: 1.2rem;
+            margin: 1.8rem 0 0.6rem 0;
+            color: #3a332c;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+        }
+
+        /* 引用块与提示框 */
+        .insight {
+            background-color: #ede6db;
+            border-left: 6px solid #b7a68e;
+            padding: 1.2rem 1.8rem;
+            margin: 1.6rem 0 1.8rem 0;
+            border-radius: 0 16px 16px 0;
+            font-size: 0.98rem;
+            color: #3b352e;
+        }
+
+        .insight strong {
+            font-weight: 600;
+            color: #302922;
+        }
+
+        .note {
+            background: #f2ede4;
+            border-radius: 20px;
+            padding: 1.2rem 1.8rem;
+            margin: 1.5rem 0;
+            border: 1px solid #dfd5c7;
+            font-size: 0.96rem;
+        }
+
+        .note::before {
+            content: "📎 延伸笔记";
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #5f5140;
+            letter-spacing: 0.3px;
+            font-size: 0.9rem;
+        }
+
+        /* 列表 */
+        ul {
+            margin: 0.6rem 0 1.5rem 1.8rem;
+            list-style: none;
+            padding-left: 0.2rem;
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.4rem;
+        }
+
+        ul li::before {
+            content: "·";
+            font-weight: bold;
+            font-size: 1.6rem;
+            position: absolute;
+            left: 0;
+            top: -0.25rem;
+            color: #9b8b78;
+        }
+
+        /* FAQ 摘要 */
+        .faq-summary {
+            background: #f3ede3;
+            border-radius: 24px;
+            padding: 1.8rem 2rem;
+            margin: 2.4rem 0 1.8rem 0;
+        }
+
+        .faq-summary h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.2rem;
+            border-bottom: 1px dashed #dad0c0;
+            padding-bottom: 1rem;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .faq-q {
+            font-weight: 600;
+            color: #3c3229;
+            margin-bottom: 0.3rem;
+            font-size: 0.98rem;
+        }
+
+        .faq-a {
+            color: #4d443b;
+            font-size: 0.95rem;
+        }
+
+        .faq-a a {
+            color: #6d5c48;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: #c3b3a0;
+            font-weight: 400;
+        }
+
+        .faq-a a:hover {
+            color: #2f281f;
+            text-decoration-color: #7d6b53;
+        }
+
+        /* 页面底部 */
+        .footer-note {
+            margin-top: 2.8rem;
+            padding-top: 1.6rem;
+            border-top: 1px solid #e2d6c6;
+            font-size: 0.9rem;
+            color: #706454;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .footer-note span {
+            opacity: 0.9;
+        }
+
+        .footer-note a {
+            color: #5e4f3b;
+            text-decoration: none;
+            border-bottom: 1px dotted #b7a68e;
+            padding-bottom: 1px;
+        }
+
+        .footer-note a:hover {
+            border-bottom-style: solid;
+            color: #2b241c;
+        }
+
+        .inline-link {
+            color: #5c4c39;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-color: #cfc0ac;
+        }
+
+        .inline-link:hover {
+            color: #2f261d;
+            text-decoration-color: #7a6852;
+        }
+
+        /* 响应式 */
+        @media (max-width: 650px) {
+            body {
+                padding: 1.2rem 0.8rem;
+            }
+            .page {
+                padding: 1.6rem 1.2rem;
+                border-radius: 16px;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .faq-summary {
+                padding: 1.2rem 1.2rem;
+            }
+            .footer-note {
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <!-- hero 区 -->
+    <div class="hero">
+        <h1>雷速 · 查询与对照</h1>
+        <p>日常信息检索中的线索整理、延伸阅读与知识参照</p>
+        <div class="sub">—— 从一段查询出发，逐步锚定上下文</div>
+    </div>
+
+    <!-- 优势 / 特点区 · 以叙述方式介入 -->
+    <h2>为什么需要一种查询辅助视角</h2>
+    <p>在日常检索中，我们常常面对零散的关键词、片段式的术语或不同来源的表述。无论是对照某个概念在不同语境下的使用，还是追溯某条线索的前后文，一个能够承载对照与延伸功能的工具界面，往往比单纯的搜索引擎列表更有利于信息沉淀。这就是「<a href="https://leisu-cn-rayspeed.com" class="inline-link">雷速</a>」所希望提供的：一种偏向于阅读与比照的信息环境，而非简单的聚合或跳转。</p>
+
+    <div class="insight">
+        <strong>一个常见的场景：</strong> 当你记下一个术语或者短语，想要了解它通常出现在哪类叙述中，或者想对比两段相似文本的措辞差异——这时你需要的不是更多链接，而是可横向阅读的上下文。
+    </div>
+
+    <h3>不止是关键词匹配</h3>
+    <p>很多工具善于给出「结果」，但少有关注「查的过程」本身。如果一段查询的目的是为了理解脉络、校准表述，那么展示方式就应该向阅读器靠拢：清晰的段落层级、克制的视觉干扰、以及字号与行距上对眼睛的友好。这也是为什么这个页面采用米白背景和偏大字号，让人更愿意停留、而不是急着跳转。</p>
+
+    <!-- 说明区：具体场景与工作流 -->
+    <h2>对照、延伸与备注</h2>
+    <p>在知识工作或日常兴趣阅读中，你可能有这样的习惯：打开一个页面作为主参考，同时打开另一个页面作为对比。这种「并置阅读」其实很消耗注意力。而如果能把对照内容融合进同一个浏览节奏中，就能减少窗口切换的摩擦。<a href="https://leisu-cn-rayspeed.com" class="inline-link">雷速</a>的页面设计本身就考虑了这一层：信息密度适中，段落之间留有呼吸空间，方便你在阅读时随时停下来思考或做笔记。</p>
+
+    <div class="note">
+        举例来说，当你需要核实某段引文的原始语境，或者想看看一个特定搭配在自然文本中如何出现，这里的布局会让你更容易定位到差异点，而不至于被满屏的加粗和高亮带偏注意力。
+    </div>
+
+    <h3>延伸阅读的节奏</h3>
+    <p>好的延伸阅读不是无限点击，而是有节制的展开。在结构上，这个页面有意将内容划分为几个可独立阅读的区块：hero 区明确主题，主体部分展开观点，FAQ 摘要回答常见疑问，底部则给出简洁的归属与链接。每个区块之间用留白和浅分隔线过渡，不会产生跳跃感。</p>
+
+    <ul>
+        <li>通过段落承接让逻辑自然流动，而不是靠标题堆砌</li>
+        <li>引用块与提示框用于补充说明，不打断主线叙述</li>
+        <li>链接仅在有实际对照需要时嵌入，避免导航疲劳</li>
+    </ul>
+
+    <!-- FAQ 摘要 -->
+    <div class="faq-summary">
+        <h2>常见疑问摘要</h2>
+
+        <div class="faq-item">
+            <div class="faq-q">这个页面与「雷速」是什么关系？</div>
+            <div class="faq-a">这是基于 <a href="https://leisu-cn-rayspeed.com">雷速</a> 定位所延伸出的介绍页，侧重展示一种偏向知识阅读与对照查询的信息组织方式。页面本身不收集数据，也不替换原有服务。</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">我可以直接使用这里的结构作为自己项目的参考吗？</div>
+            <div class="faq-a">可以。这里展示的排版和内容组织方式均基于通用 HTML/CSS，不涉及专有资源。建议根据自身内容调整语气与区块划分。</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">为什么强调「延伸阅读」而非「快速获取」？</div>
+            <div class="faq-a">因为在很多非事务性查询中，用户的真实需求是理解语境，而非仅仅定位一个答案。延伸阅读的节奏更契合这种深度参照的场景。</div>
+        </div>
+    </div>
+
+    <!-- 底部链接 -->
+    <div class="footer-note">
+        <span>偏重叙述与对照的查询辅助</span>
+        <span><a href="https://leisu-cn-rayspeed.com">雷速</a> · 信息阅读的新节奏</span>
+    </div>
+</div>
+</body>
+</html>
